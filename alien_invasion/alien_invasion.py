@@ -33,4 +33,3 @@ if __name__ == '__main__':      #在自己的文件里__name__ == '__main__' 如
     ai = AlienInvasion()
     ai.run_game()
 
-    fdsfsdf
