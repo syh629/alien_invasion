@@ -6,6 +6,7 @@ import pygame
 
 from settings import Settings
 from ship import Ship
+from bullet import Bullet
 
 class AlienInvasion:
     '''管理游戏资源和行为的类'''
@@ -20,12 +21,14 @@ class AlienInvasion:
         pygame.display.set_caption('Alien Invasion')   #设置游戏标题
 
         self.ship = Ship(self)  #因为Ship还有个参数ai_game 这里把AlienInvasion实例赋给ai_game
+        self.bullet = pygame.sprite.Group()
 
     def run_game(self):
         '''开始游戏的主循环'''
         while True:
             self._check_events()
             self.ship.update()
+            self.bullet.update()
             self._update_screen()
 
     def _check_events(self):
@@ -46,6 +49,8 @@ class AlienInvasion:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
             sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
 
     def _check_keyup_events(self,event):
         '''响应松开'''
@@ -54,10 +59,17 @@ class AlienInvasion:
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
 
+    def _fire_bullet(self):
+        '''创建一颗子弹，并将其加入编组bullets中'''
+        new_bullet = Bullet(self)
+        self.bullet.add(new_bullet)
+
     def _update_screen(self):
         '''更新屏幕上的图像，并切换到新屏幕'''
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
+        for bullet in self.bullet.sprites():        #bullet.sprites()返回一个列表，包含编组bullets中所有的精灵
+            bullet.draw_bullet()
 
         #让最近绘制的屏幕可见
         pygame.display.flip()
