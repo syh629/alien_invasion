@@ -61,6 +61,7 @@ class AlienInvasion:
             self._check_events()
             self.ship.update()
             self._update_bullets()
+            self._update_aliens()
             self._update_screen()
 
     def _check_events(self):
@@ -106,6 +107,10 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
+
+    def _update_aliens(self):
+        '''更新外星人群中所有外星人的位置'''
+        self.aliens.update()
 
     def _update_screen(self):
         '''更新屏幕上的图像，并切换到新屏幕'''
